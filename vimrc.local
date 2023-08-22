@@ -1,0 +1,322 @@
+let python_highlight_all=1
+
+packadd termdebug
+let termdebugger="rust-gdb"
+
+" cursor change insert mode 
+let &t_SI = "\e[6 q"
+let &t_EI = "\e[2 q"
+
+set t_Co=256
+set background=dark
+
+set history=1000
+set autoread
+set nobackup
+set nowb
+set noswapfile
+set hid
+set magic
+set backspace=eol,start,indent
+set whichwrap+=<,>,h,l
+set ts=4
+set shiftwidth=4
+set softtabstop=4
+set expandtab
+set autoindent
+set cindent
+set smartindent
+set nocompatible
+set showmatch
+set ignorecase
+set hlsearch
+set cursorline
+set smartcase
+set incsearch
+set mouse=a
+set timeoutlen=1000
+set ttimeoutlen=0
+set vb
+set scrolloff=4
+set laststatus=4
+set nofoldenable
+set clipboard=unnamed
+set number
+set relativenumber
+set numberwidth=4
+set lazyredraw
+set colorcolumn=100
+set encoding=utf-8
+
+let g:ctrlp_map = '<c-p>'
+let g:ctrlp_cmd = 'CtrlP'
+let g:ctrlp_working_path_mode = 'ca'
+let g:ctrlp_user_command = 'find %s -type f'
+let g:ctrlp_custom_ignore = '\v[\/]\.(git|hg|svn|bin)$'
+
+" set up some custom colors
+" highlight clear SignColumn
+" highlight ColorColumn   ctermbg=237
+" highlight CursorLine    ctermbg=236
+" highlight CursorLineNr  ctermbg=236     ctermfg=240
+" highlight IncSearch     ctermbg=0       ctermfg=3
+" highlight LineNr        ctermbg=236     ctermfg=240
+" highlight Pmenu         ctermbg=0     ctermfg=240
+" highlight PmenuSel      ctermbg=0       ctermfg=3
+" highlight Pmenu         ctermbg=240     ctermfg=12
+" highlight PmenuSel      ctermbg=0       ctermfg=3
+" highlight Search        ctermbg=0       ctermfg=9
+" highlight SpellBad      ctermbg=0       ctermfg=1
+" highlight StatusLine    ctermbg=240     ctermfg=12
+" highlight StatusLineNC  ctermbg=238     ctermfg=0
+" highlight VertSplit     ctermbg=236
+" highlight Visual        ctermbg=3       ctermfg=0
+highlight BadWhitespace ctermbg=DarkRed ctermfg=DarkRed
+au BufRead,BufNewFile *.py,*.pyw, match BadWhitespace /\s\+$/
+au BufNewFile,BufRead *.py;
+    \ set tabstop=2
+    \ set softtabstop=2
+    \ set shiftwidth=2
+    \ set textwidth=79
+    \ set expandtab
+    \ set autoindent
+    \ set fileformat=unix
+au BufNewFile,BufRead *.js, *.html, *.css, *.scala;
+    \ set tabstop=2
+    \ set softtabstop=2
+    \ set shiftwidth=2
+au InsertEnter * hi StatusLine ctermfg=235 ctermbg=2
+au InsertLeave * hi StatusLine ctermbg=240 ctermfg=12
+
+
+" Return to last edit position when opening files (You want this!)
+autocmd BufReadPost *
+     \ if line("'\"") > 0 && line("'\"") <= line("$") |
+     \   exe "normal! g`\"zz" |
+    \ endif
+" Remember info about open buffers on close
+set viminfo=%,\"100,'10,/50,:100,h,f0,n~/.vim/cache/.viminfo
+
+" set vim to chdir for each file
+if exists('+autochdir')
+    set autochdir
+else
+    autocmd BufEnter * silent! lcd %:p:h:gs/ /\\ /
+endif 
+
+" set leader key to comma
+let mapleader = ","
+
+nnoremap <Down> <C-w>-
+inoremap <Down> <C-w>-
+nnoremap <Left> <C-w><
+inoremap <Left> <C-w><
+nnoremap <Right> <C-w>>
+inoremap <Right> <C-w>>
+nnoremap <Up> <C-w>+
+inoremap <Up> <C-w>+
+
+" Toggle buffers
+nnoremap <leader><leader> <C-^>
+
+" Begin line and end line
+map S ^
+map D $
+
+" auto set equal panes
+autocmd VimResized * wincmd =
+
+
+" Editor panes
+nnoremap j gj
+nnoremap k gk
+nnoremap <silent> \ :nohlsearch<CR>
+nnoremap <C-c> gUiwe
+nnoremap <S-c> guiwe
+nnoremap <C-l> ^v$
+nnoremap <C-\> ^i#<Space><Esc>j
+nnoremap <leader>vs :Vex<CR>
+nnoremap <leader>hs :Sex<CR>
+nnoremap <C-J> <C-W><C-J>
+nnoremap <C-K> <C-W><C-K>
+nnoremap <C-L> <C-W><C-L>
+nnoremap <C-H> <C-W><C-H>
+nnoremap <silent> <leader>vr :vertical resize 80<CR>
+nnoremap <silent> <leader>ve <C-W>=
+nnoremap <silent> <leader>rp :vertical resize +5<CR>
+nnoremap <silent> <leader>rm :vertical resize -5<CR>
+
+
+" Edit file completions
+inoremap <leader>, <Esc>
+vnoremap <leader>, <Esc>
+inoremap <leader>"" <Esc>""P
+nnoremap <leader>dd Y""Pj
+nnoremap <leader>evim :edit $MYVIMRC<CR>
+nnoremap <leader>ed :edit $MYVIMRC.local<CR>
+nnoremap <leader>im V:w! >> $MYVIMRC.local<CR>dd
+nnoremap <leader>iv :vsplit $MYVIMRC.local<CR>
+nnoremap <leader>j ddj""P
+nnoremap <leader>ju :Update<CR>
+nnoremap <leader>k ddk""P
+nnoremap <leader>mk :!mkdir %:p:h
+nnoremap <leader>mf :new %:p:h
+nnoremap <leader>ml oinoremap <leader'<BS>>
+nnoremap <leader>nl onnoremap <leader'<BS>>
+nnoremap <leader>o o<Esc>O
+nnoremap <leader>s :w!<CR>
+nnoremap <leader>sa ggvG$y
+nnoremap <leader>se :w!<CR>:q!<CR>
+nnoremap <leader>setp :set paste<CR>
+nnoremap <leader>setnp :set nopaste<CR>
+nnoremap <leader>sla VG$
+nnoremap <leader>sv :w!<CR>:source $MYVIMRC<CR>
+nnoremap <leader>uc F#2x
+
+" Python completions
+nnoremap <leader>_p ifrom __future__ import print_function<CR><Esc>
+nnoremap <leader>_a ifrom __future__ import absolute_import<CR><Esc>
+
+" Keras completeions
+nnoremap <leader>klc ifrom keras.layers import Convolution2D, MaxPooling2D<Esc>o<Esc>
+nnoremap <leader>kld ifrom keras.layers import Dense, Flatten, Input<Esc>o<Esc>
+inoremap <leader>kcd Convolution2D()<Esc>i
+inoremap <leader>kmd MaxPooling2D((2, 2), strides=(2, 2), name=)(blck)<Esc>F=a
+
+nnoremap <leader>kmm ifrom keras.engine import Model
+inoremap <leader>kms ifrom keras.engine import Sequential
+
+" CtlP completions
+nnoremap <leader>rf :CtrlPClearCache<CR>
+
+" Windowswap
+let g:windowswap_map_keys = 0 "prevent default bindings
+nnoremap <silent> <leader>yw :call WindowSwap#MarkWindowSwap()<CR>
+nnoremap <silent> <leader>pw :call WindowSwap#DoWindowSwap()<CR>
+nnoremap <silent> <leader>ww :call WindowSwap#EasyWindowSwap()<CR>
+
+" NerdTree
+" autocmd BufWritePost * NERDTreeFocus | execute 'normal R' | wincmd p
+" autocmd BufEnter * NERDTreeFocus | execute 'normal R' | wincmd p
+autocmd StdinReadPre * let s:std_in=1
+autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | NERDTree | endif
+map <C-d> :NERDTreeToggle<CR>
+map <C-f> :NERDTreeFind<CR>
+
+" YouCompleteMe
+map <C-g> :YcmCompleter GoTo<CR>
+nnoremap <silent> <leader>fx :YcmCompleter FixIt<CR>
+
+" Plugin
+nnoremap <silent> <leader>int :PluginInstall<CR>
+
+let g:C_UseTool_cmake = "yes"
+let g:C_UseTool_doxygen = "yes"
+
+nnoremap <C-_> :Commentary<cr>
+
+nnoremap <silent> <leader>t :below term<CR>
+
+" Rust
+let g:rustfmt_autosave = 1
+let g:ycm_rust_src_path = $RUST_SRC_PATH
+nnoremap <leader>d :YcmCompleter GoTo<CR>
+
+" Syntastic
+set statusline+=%#warningmsg#
+set statusline+=%{SyntasticStatuslineFlag()}
+set statusline+=%*
+
+let g:syntastic_always_populate_loc_list = 1
+let g:syntastic_auto_loc_list = 1
+let g:syntastic_check_on_open = 1
+let g:syntastic_check_on_wq = 0
+let g:syntastic_javascript_checkers = ['eslint']
+let g:syntastic_javascript_eslint_exe = 'yarn lint --'
+
+" Auto closing
+" inoremap ( ()<left>
+" inoremap (<CR> (<CR>)<ESC>O
+" inoremap <expr> )  strpart(getline('.'), col('.')-1, 1) == ")" ? "\<Right>" : ")"
+" inoremap [ []<left>
+" inoremap [<CR> [<CR>]<ESC>O
+" inoremap <expr> ]  strpart(getline('.'), col('.')-1, 1) == "]" ? "\<Right>" : "]"
+" inoremap { {}<left>
+" inoremap {<CR> {<CR>}<ESC>O
+" inoremap <expr> }  strpart(getline('.'), col('.')-1, 1) == "}" ? "\<Right>" : "}"
+" inoremap < <><left>
+" inoremap <expr> >  strpart(getline('.'), col('.')-1, 1) == ">" ? "\<Right>" : ">" 
+
+" Coc
+set signcolumn=yes
+
+" use tab to trigger completion
+inoremap <silent><expr> <TAB>
+    \ pumvisible() ? "\<C-n>" :
+    \ CheckBackspace() ? "\<TAB>" :
+    \ coc#refresh()
+inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
+
+function! CheckBackspace() abort
+    let col = col('.') - 1
+    return !col || getline('.')[col - 1] =~# '\s'
+endfunction
+
+" use space to trigger completion
+inoremap <silent><expr> <c-space> coc#refresh
+
+inoremap <silent><expr> <cr> pumvisible() ? coc#_select_confirm()
+                                \: "\<C-g>u\<CR>\<c-r>=coc#on_enter()\<CR>"
+
+" navigate diagnostics
+nmap <silent> [g <Plug>(coc-diagnostics-prev)
+nmap <silent> ]g <Plug>(coc-diagnostics-next)
+
+" goto code
+nmap <silent> gd <Plug>(coc-definition)
+nmap <silent> gy <Plug>(coc-type-definition)
+nmap <silent> gi <Plug>(coc-implementation)
+nmap <silent> gr <Plug>(coc-references)
+
+nnoremap <silent> K :call ShowDocumentation()<CR>
+
+function! ShowDocumentation()
+    if CocAction('hasProvider', 'hover')
+        call CocActionAsync('doHover')
+    else
+        call feedkeys('K', 'in')
+    endif
+endfunction
+
+" highlight symbol and references
+autocmd CursorHold * silent call CocActionAsync('highlight')
+
+" symbol rename
+nmap <leader>rn <Plug>(coc-refactor)
+xmap <leader>f <Plug>(coc-format-selected)
+nmap <leader>f <Plug>(coc-format-selected)
+nmap <leader>I <Plug>(coc-codeaction-line)
+
+" coc config
+let g:coc_global_extensions = [
+    \ 'coc-pairs',
+    \ 'coc-tsserver',
+    \ 'coc-eslint',
+    \ 'coc-prettier',
+    \ 'coc-json',
+    \ 'coc-rust-analyzer',
+    \ ]
+
+" let g:LanguageClient_serverCommands = {
+"         \ 'rust': ['rust-analyzer'],
+"         \ }
+
+inoremap <leader>pl println!("{:?}", );<Esc>hi
+
+function Mkdir(dir) 
+    let p = expand('%:p:h') . "/" . a:dir
+    call mkdir(p)
+endfunction 
+
+" Rust 
+command! -nargs=1 Mksub :call Mkdir(<f-args>)
